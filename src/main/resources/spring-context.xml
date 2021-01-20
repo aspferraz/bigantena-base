@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xsi:schemaLocation="
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx.xsd">
+   
+        <bean id="entityManagerFactory"
+              class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+              <property name="persistenceUnitName" value="bigantenadbPU" />
+              <property name="dataSource" ref="postgresDataSource" />
+              <property name="jpaVendorAdapter">
+                <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+              </property>
+        </bean>
+        
+        <bean id="postgresDataSource" class = "com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+            <property name="driverClass" value="org.postgresql.Driver" />
+            <property name="jdbcUrl" value="jdbc:postgresql://server-01:5432/bigantena_db?createDatabaseIfNotExist=false" />
+            <property name="user" value="bauser" />
+            <property name="password" value="bapass" />
+            <!-- these are C3P0 properties -->
+            <!-- pool sizing -->
+            <property name="initialPoolSize" value="3" />
+            <property name="minPoolSize" value="6" />
+            <property name="maxPoolSize" value="25" />
+            <property name="acquireIncrement" value="3" />
+            <property name="maxStatements" value="0" />
+            <!-- retries -->
+            <property name="acquireRetryAttempts" value="30" />
+            <property name="acquireRetryDelay" value="1000" /> <!-- 1s -->
+            <property name="breakAfterAcquireFailure" value="false" />
+            <!-- refreshing connections -->
+            <property name="maxIdleTime" value="180" /> <!-- 3min -->
+            <property name="maxConnectionAge" value="3600" /> <!-- 1h -->
+            <!-- timeouts and testing -->
+            <property name="checkoutTimeout" value="5000" /> <!-- 5s -->
+            <property name="idleConnectionTestPeriod" value="60" /> <!-- 60 -->
+            <property name="testConnectionOnCheckout" value="true" />
+            <property name="preferredTestQuery" value="SELECT 1" />
+            <property name="testConnectionOnCheckin" value="true" />
+        </bean>
+      
+        <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+            <property name="entityManagerFactory" ref="entityManagerFactory" />
+        </bean>
+        <tx:annotation-driven />
+   
+        <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+        
+        <!-- Define o pacote base para o escaneamento das anotações de contexto (@Component, @Repository, @Service, @Controller, etc) -->
+        <context:component-scan base-package="com.bigantena.dao" />
+        <context:component-scan base-package="com.bigantena.service" />
+        <context:annotation-config />
+   
+  </beans>

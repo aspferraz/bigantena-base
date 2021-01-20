@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence    http://xmlns.jcp.org/xml/ns/persistence_2_1.xsd">
+  <persistence-unit name="bigantenadbPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <!--
+        MAPPINGS
+    -->
+    <!-- Use only classes specified in MAPPINGS -->
+    <class>com.bigantena.model.Acesso</class>
+    <class>com.bigantena.model.AlteracaoRadio</class>
+    <class>com.bigantena.model.Genero</class>
+    <class>com.bigantena.model.Pais</class>
+    <class>com.bigantena.model.Continente</class>
+    <class>com.bigantena.model.Radio</class>
+    <class>com.bigantena.model.Estado</class>
+    <class>com.bigantena.model.Cidade</class>
+    <class>com.bigantena.model.Usuario</class>
+    <class>com.bigantena.model.UsuarioRegra</class>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
+      <!-- Log SQL queries -->
+      <property name="hibernate.show_sql" value="false"/>
+      <property name="hibernate.format_sql" value="false"/>
+      <property name="hibernate.use_sql_comments" value="false"/>
+      <property name="hibernate.hbm2ddl.auto" value="validate"/>
+      <!-- Use only classes specified in MAPPINGS -->
+      <property name="hibernate.archive.autodetection" value="none"/>
+    </properties>
+  </persistence-unit>
+</persistence>
